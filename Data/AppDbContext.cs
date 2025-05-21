@@ -9,7 +9,8 @@ public class AppDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder options)
     {
-        options.UseSqlServer("Server=localhost;Database=ConsoleProject;User Id=sa;Password=YourStrong@Passw0rd;" +
+        options.UseSqlServer("Server=localhost,1433;Database=ConsoleProject;User Id=sa;Password=YourStrong@Passw0rd;" +
                              "TrustServerCertificate=True;");
+
     }
 }

@@ -17,6 +17,7 @@ static class Program
         mainMenu
             .AddMenu("Giriş Yap", LoginUser)
             .AddMenu("Kayıt Ol", RegisterUser)
+            .AddOption("Şifremi Unuttum", ForgotPassword)
             .AddOption("Mevcut Kullanıcıyı Gör", ShowCurrentUser)
             .AddOption("Çıkış Yap", Logout)
             .AddOption("Programdan Çık", () =>
@@ -53,6 +54,35 @@ static class Program
             break;
         }
     }
+    static void ForgotPassword()
+    {
+        using var dbContext = new AppDbContext();
+
+        var username = Helper.Ask("Kullanıcı adınızı girin", true);
+        var user = dbContext.Users.FirstOrDefault(u => u.Username == username);
+
+        if (user == null)
+        {
+            Helper.ShowErrorMsg("Bu kullanıcı bulunamadı.");
+            return;
+        }
+
+        var nameCheck = Helper.Ask("Adınızı girin (doğrulama için)", true);
+        if (!string.Equals(user.Name, nameCheck))
+        {
+            Helper.ShowErrorMsg("Doğrulama başarısız. Adınız uyuşmuyor.");
+            return;
+        }
+
+        var newPassword = Helper.AskPassword("Yeni şifrenizi girin");
+        var hashed = Hash(newPassword);
+
+        user.Password = hashed;
+        dbContext.Users.Update(user);
+        dbContext.SaveChanges();
+
+        Helper.ShowSuccessMsg("Şifreniz başarıyla güncellendi.");
+    }
     static void RegisterUser()
     {
         using var dbContext = new AppDbContext();
@@ -85,6 +115,8 @@ static class Program
         dbContext.SaveChanges();
 
         Helper.ShowSuccessMsg("Kayıt başarılı.");
+        Console.WriteLine("\nMenüye dönmek için bir tuşa basın...");
+        Console.ReadKey(true);
     }
 
     static void ShowCurrentUser()

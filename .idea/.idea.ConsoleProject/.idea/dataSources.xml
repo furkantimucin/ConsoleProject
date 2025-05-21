@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="ConsoleAppDb@localhost" uuid="b5c5adc8-b7e9-4573-93c4-49c3557f7873">
+    <data-source source="LOCAL" name="ConsoleProject@localhost" uuid="3a9fbc67-6bbc-4611-b8b3-c319acb35670">
       <driver-ref>sqlserver.jb</driver-ref>
       <synchronize>true</synchronize>
       <configured-by-url>true</configured-by-url>
       <jdbc-driver>com.jetbrains.jdbc.sqlserver.SqlServerDriver</jdbc-driver>
-      <jdbc-url>Server=localhost;Database=ConsoleAppDb;User Id=sa;Password=YourStrong@Passw0rd;</jdbc-url>
+      <jdbc-url>Server=localhost,1433;Database=ConsoleProject;User Id=sa;Password=YourStrong@Passw0rd;</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>
