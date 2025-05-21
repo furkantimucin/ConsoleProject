@@ -43,13 +43,13 @@ static class Program
             if (user == null || user.Password != hashed)
             {
                 Helper.ShowErrorMsg("Bu kullanıcının kaydı olmayabilir ya da eksik ve hatalı giriş yaptınız.");
-                Console.WriteLine(); // boş satırla ayır
-                continue; // yeniden sorsun
+                Console.WriteLine(); 
+                continue; 
             }
 
             _loggedInUser = user;
             Helper.ShowSuccessMsg($"Giriş başarılı! Hoş geldin, {_loggedInUser.Name}.");
-            Thread.Sleep(1000); // menüye dönmeden önce bekleme
+            Thread.Sleep(1000); 
             break;
         }
     }
