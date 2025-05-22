@@ -19,12 +19,7 @@ static class Program
             .AddMenu("Kayıt Ol", RegisterUser)
             .AddOption("Şifremi Unuttum", ForgotPassword)
             .AddOption("Mevcut Kullanıcıyı Gör", ShowCurrentUser)
-            .AddOption("Çıkış Yap", Logout)
-            .AddOption("Programdan Çık", () =>
-            {
-                Console.WriteLine("Programdan çıkılıyor...");
-                Thread.Sleep(1000);
-            });
+            .AddOption("Oturumu Kapat", Logout);
 
         mainMenu.Show();
     }
