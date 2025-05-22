@@ -28,40 +28,45 @@ static class Program
 
         mainMenu.Show();
     }
+    
     static void LoggedInUserMenu()
     {
         var userMenu = new ConsoleMenu("Kullanıcı Menüsü");
+
         userMenu
             .AddOption("Rumuz belirle", () => Console.WriteLine("Rumuzun nedir?"))
             .AddOption("Oda ara", () => Console.WriteLine("Oda ara"))
             .AddOption("Oda oluştur", () => Console.WriteLine("Oda oluştur"));
-        
+
         userMenu.Show();
     }
-
+    
     static void LoginUser()
     {
         var inputUsername = Helper.Ask("Kullanıcı adı", true);
         var inputPassword = Helper.AskPassword("Şifre");
+
         var loginStatus = Auth.Login(inputUsername, inputPassword, out var user);
+
         switch (loginStatus)
         {
             case Auth.LoginStatus.LoggedIn:
-                _loggedInUser = user; // login olan kullanıcıyı genel olarak erişebileceğim bir yere göndermem lazım
-                LoggedInUserMenu(); // giriş yapıldıktan sonra göstermem gereken menüyü göstercem
+                _loggedInUser = user;
+                LoggedInUserMenu();
                 break;
+
             case Auth.LoginStatus.UserNotFound:
                 Helper.ShowErrorMsg("Kullanıcın bulunamadı!");
                 Thread.Sleep(1000);
                 break;
+
             case Auth.LoginStatus.WrongCredentials:
                 Helper.ShowErrorMsg("Eksik veya hatalı giriş yaptın!");
                 Thread.Sleep(1000);
                 break;
         }
     }
-
-   
+    
     static void ForgotPassword()
     {
         using var dbContext = new AppDbContext();
@@ -91,6 +96,7 @@ static class Program
 
         Helper.ShowSuccessMsg("Şifreniz başarıyla güncellendi.");
     }
+    
     static void RegisterUser()
     {
         using var dbContext = new AppDbContext();
@@ -126,7 +132,7 @@ static class Program
         Console.WriteLine("\nMenüye dönmek için bir tuşa basın...");
         Console.ReadKey(true);
     }
-
+    
     static void ShowCurrentUser()
     {
         if (_loggedInUser != null)
@@ -139,6 +145,7 @@ static class Program
         }
     }
 
+   
     static void Logout()
     {
         if (_loggedInUser != null)
@@ -151,7 +158,7 @@ static class Program
             Helper.ShowInfoMsg("Zaten giriş yapılmamış.");
         }
     }
-
+    
     static string Hash(string rawData)
     {
         using (SHA256 sha256Hash = SHA256.Create())
@@ -163,6 +170,7 @@ static class Program
             {
                 builder.Append(b.ToString("x2"));
             }
+
             return builder.ToString();
         }
     }
