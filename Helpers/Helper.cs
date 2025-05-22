@@ -1,3 +1,4 @@
+
 namespace ConsoleProject.Helpers;
 
 public static class Helper

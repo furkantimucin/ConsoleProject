@@ -28,32 +28,40 @@ static class Program
 
         mainMenu.Show();
     }
+    static void LoggedInUserMenu()
+    {
+        var userMenu = new ConsoleMenu("Kullanıcı Menüsü");
+        userMenu
+            .AddOption("Rumuz belirle", () => Console.WriteLine("Rumuzun nedir?"))
+            .AddOption("Oda ara", () => Console.WriteLine("Oda ara"))
+            .AddOption("Oda oluştur", () => Console.WriteLine("Oda oluştur"));
+        
+        userMenu.Show();
+    }
 
     static void LoginUser()
     {
-        using var dbContext = new AppDbContext();
-
-        while (true)
+        var inputUsername = Helper.Ask("Kullanıcı adı", true);
+        var inputPassword = Helper.AskPassword("Şifre");
+        var loginStatus = Auth.Login(inputUsername, inputPassword, out var user);
+        switch (loginStatus)
         {
-            var username = Helper.Ask("Kullanıcı adı", true);
-            var password = Helper.AskPassword("Şifre");
-            var hashed = Hash(password);
-
-            var user = dbContext.Users.FirstOrDefault(u => u.Username == username);
-
-            if (user == null || user.Password != hashed)
-            {
-                Helper.ShowErrorMsg("Bu kullanıcının kaydı olmayabilir ya da eksik ve hatalı giriş yaptınız.");
-                Console.WriteLine(); 
-                continue; 
-            }
-
-            _loggedInUser = user;
-            Helper.ShowSuccessMsg($"Giriş başarılı! Hoş geldin, {_loggedInUser.Name}.");
-            Thread.Sleep(1000); 
-            break;
+            case Auth.LoginStatus.LoggedIn:
+                _loggedInUser = user; // login olan kullanıcıyı genel olarak erişebileceğim bir yere göndermem lazım
+                LoggedInUserMenu(); // giriş yapıldıktan sonra göstermem gereken menüyü göstercem
+                break;
+            case Auth.LoginStatus.UserNotFound:
+                Helper.ShowErrorMsg("Kullanıcın bulunamadı!");
+                Thread.Sleep(1000);
+                break;
+            case Auth.LoginStatus.WrongCredentials:
+                Helper.ShowErrorMsg("Eksik veya hatalı giriş yaptın!");
+                Thread.Sleep(1000);
+                break;
         }
     }
+
+   
     static void ForgotPassword()
     {
         using var dbContext = new AppDbContext();
